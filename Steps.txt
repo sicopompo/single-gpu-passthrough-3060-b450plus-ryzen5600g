@@ -1,8 +1,19 @@
 1 - Activate VFIO and check that the gpu has his own IOMMU group
-        1 - Activate in BIOS Vt-d
+        1 - Activate in BIOS Vt-d:
+            a. In the BIOS screen -> f7 -> advance mode
+            b. cpu_configuration/SVM mode -> enabled
+            c. PCI_subsystem_settings/SR-IOV -> enabled
         2 - add to kernel paraments in grub2:
             amd_iommu=on iommu=pt
-        3 - reboot and check that the 3060 is in his own group, in my case being group 10:
+        3 - reboot and check that the 3060 is in his own group, in my case being group 10 (with scripts/IOMMU-group.sh):
             IOMMU Group 10:
 	            01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA106 [GeForce RTX 3060 Lite Hash Rate] [10de:2504] (rev a1)
 	            01:00.1 Audio device [0403]: NVIDIA Corporation GA106 High Definition Audio Controller [10de:228e] (rev a1)
+        4 - Loading kernel drivers in the init image:
+            a. go to /etc/dracut.conf.d/
+            b. add to eos-default.conf:
+                add_drivers+=" vfio vfio_iommu_type1 vfio_pci "
+            c. save it overwriting the file
+        5 - Create initramfs:
+            # sudo dracut --regenerate-all --force
+
