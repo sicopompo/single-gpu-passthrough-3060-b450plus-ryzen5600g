@@ -1,0 +1,8 @@
+1 - Activate VFIO and check that the gpu has his own IOMMU group
+        1 - Activate in BIOS Vt-d
+        2 - add to kernel paraments in grub2:
+            amd_iommu=on iommu=pt
+        3 - reboot and check that the 3060 is in his own group, in my case being group 10:
+            IOMMU Group 10:
+	            01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GA106 [GeForce RTX 3060 Lite Hash Rate] [10de:2504] (rev a1)
+	            01:00.1 Audio device [0403]: NVIDIA Corporation GA106 High Definition Audio Controller [10de:228e] (rev a1)
